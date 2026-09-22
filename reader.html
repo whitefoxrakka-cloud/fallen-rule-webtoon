@@ -5,39 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kelahiran Kedua — FALLEN RULE</title>
 <link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/novel.css">
 </head>
 <body>
 <header class="topbar">
   <a class="brand" href="index.html">FALLEN <span>RULE</span></a>
   <nav>
     <a href="index.html">Episode</a>
+    <span class="nav-label" id="epLabel">Episode 1</span>
     <button id="themeToggle" class="icon-btn" aria-label="Ganti tema">&#9789;</button>
   </nav>
 </header>
 
 <main class="reader-wrap">
-  <div class="reader-head">
-    <h1 id="epTitle">Episode 1 — Kelahiran Kedua</h1>
-    <div class="reader-nav">
-      <button id="prevPanel" class="btn">&#9664; Sebelumnya</button>
-      <span id="panelCounter">1 / 8</span>
-      <button id="nextPanel" class="btn">Berikutnya &#9654;</button>
-    </div>
-  </div>
+  <h1 class="scroll-title" id="epTitle">Episode 1 — Kelahiran Kedua</h1>
+  <p class="scroll-sub">FALLEN RULE &middot; Arc 1</p>
+  <p class="scroll-hint">Gulir ke bawah untuk membaca &darr;</p>
 
-  <div id="panelStage" class="panel-stage">
-    <img id="panelImg" src="" alt="Panel">
-  </div>
+  <div id="scrollCanvas" class="scroll-canvas"></div>
 
-  <div class="reader-nav bottom">
-    <button id="prevPanelB" class="btn">&#9664; Sebelumnya</button>
-    <a id="backHome" class="btn" href="index.html">&#8962;</a>
-    <button id="nextPanelB" class="btn">Berikutnya &#9654;</button>
-  </div>
+  <p class="scroll-end">— BERSAMBUNG —</p>
 </main>
 
-<footer class="foot reader-foot">&copy; FALLEN RULE</footer>
+<footer class="foot">&copy; FALLEN RULE &middot; Webtoon orisinal &middot; Dibaca gratis</footer>
 <script src="assets/js/data.js"></script>
-<script src="assets/js/reader.js"></script>
+<script src="assets/js/scroll-reader.js"></script>
+<script src="assets/js/app.js"></script>
 </body>
 </html>

@@ -76,6 +76,10 @@ main { max-width: 760px; margin: 0 auto; padding: 26px 18px 40px; }
 }
 .buttons { color: var(--accent-2); font-weight: bold; }
 
+.section-title { margin: 38px 0 14px; padding-top: 18px; border-top: 1px solid var(--border); }
+.section-title:first-of-type { margin-top: 8px; }
+.section-title h2 { margin: 0; font-size: 22px; }
+
 .about { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
 .about h2 { font-size: 24px; }
 .about p { color: var(--muted); line-height: 1.7; }
