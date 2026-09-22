@@ -12,9 +12,10 @@
   const canvas = document.getElementById("scrollCanvas");
   canvas.innerHTML = "";
 
+  const ext = ep.ext || ".png";
   for (let i = 1; i <= ep.panelCount; i++) {
     const img = document.createElement("img");
-    img.src = ep.base + String(i).padStart(2, "0") + ".png";
+    img.src = ep.base + String(i).padStart(2, "0") + ext;
     img.alt = ep.title + " — panel " + i + "/" + ep.panelCount;
     img.loading = i <= 2 ? "eager" : "lazy";
     img.decoding = "async";
