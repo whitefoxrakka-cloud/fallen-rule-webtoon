@@ -62,6 +62,27 @@
   line-height: 1.85;
   font-size: 17px;
 }
+.novel-wide {
+  max-width: 820px;
+}
+.reader-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 4px 0 18px;
+}
+.reader-controls .btn {
+  padding: 5px 12px;
+  font-size: 13px;
+  min-width: 40px;
+}
+.reader-controls-note {
+  color: var(--muted);
+  font-size: 12px;
+  margin-left: 6px;
+}
 .novel-title {
   font-size: 30px;
   margin: 6px 0 2px;

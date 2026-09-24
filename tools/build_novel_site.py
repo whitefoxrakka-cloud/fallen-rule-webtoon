@@ -117,7 +117,20 @@ def group_files(chapters):
     return groups
 
 
-def render_chapter_html(chap, content_html, prev_link, next_link):
+def toc_entries(groups):
+    """Daftar (label, href) untuk dropdown daftar isi bab."""
+    out = []
+    for idx, group in enumerate(groups):
+        chap = group[0]
+        key = chap["key"]
+        label = split_heading(chap["text"])[0] if chap.get("text") else key
+        if key.upper() == "PROLOG":
+            label = "Prolog &amp; Bab 1"
+        out.append((label, file_name_for(key, idx + 1)))
+    return out
+
+
+def render_chapter_html(chap, content_html, prev_link, next_link, toc=None):
     key = chap["key"]
     name, sub = split_heading(chap["text"]) if chap.get("text") else (key, "")
     title_parts = []
@@ -130,6 +143,18 @@ def render_chapter_html(chap, content_html, prev_link, next_link):
         title_parts.append(t)
     title = " — ".join(title_parts) + " — FALLEN RULE (Novel)"
 
+    # Deskripsi/Sinopsis: bagian naratif pertama (bukan SYSTEM NOTICE)
+    snippet = ""
+    for blk in chap["blocks"]:
+        if "[SYSTEM NOTICE]" in blk or "[RULE SETTING]" in blk or "[JENDELA" in blk:
+            continue
+        snippet = re.sub(r"\s+", " ", blk.replace("\\n", " ")).strip()
+        if snippet:
+            break
+    if len(snippet) > 160:
+        snippet = snippet[:157].rstrip() + "..."
+    desc = "FALLEN RULE — %s. %s" % (title_parts[0], snippet) if snippet else title
+
     nav = ""
     if prev_link:
         nav += '  <a class="btn" href="%s">&larr; %s</a>\n' % (prev_link[0], prev_link[1])
@@ -137,12 +162,27 @@ def render_chapter_html(chap, content_html, prev_link, next_link):
     if next_link:
         nav += '  <a class="btn" href="%s">%s &rarr;</a>\n' % (next_link[0], next_link[1])
 
+    # Dropdown daftar isi bab (diisi JS dari data-toc)
+    toc_options = ""
+    if toc:
+        toc_options = "".join(
+            '<option value="%s"%s>%s</option>' % (href, " selected" if href == file_name_for(key, 1) else "", label)
+            for label, href in toc
+        )
+
     return f"""<!DOCTYPE html>
 <html lang="id" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
+<link rel="icon" href="data:,">
+<meta name="description" content="{esc(desc)}">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FALLEN RULE">
+<meta property="og:title" content="{esc(title_parts[0])}">
+<meta property="og:description" content="{esc(desc[:200])}">
+<link rel="canonical" href="https://whitefoxrakka-cloud.github.io/fallen-rule-webtoon/novel/{file_name_for(key, 1)}">
 <link rel="stylesheet" href="../assets/css/style.css">
 <link rel="stylesheet" href="../assets/css/novel.css">
 </head>
@@ -152,10 +192,20 @@ def render_chapter_html(chap, content_html, prev_link, next_link):
   <nav>
     <a href="../index.html">Beranda</a>
     <span class="nav-label">Novel &middot; Arc 1</span>
+    <select id="chapPicker" class="ep-picker" aria-label="Pilih bab">
+      <option value="">Daftar isi bab</option>
+      {toc_options}
+    </select>
     <button id="themeToggle" class="icon-btn" aria-label="Ganti tema">&#9789;</button>
   </nav>
 </header>
 <main class="novel">
+<div class="reader-controls" aria-label="Pengaturan baca">
+  <button class="btn" id="fontMinus" type="button" aria-label="Perkecil huruf">A&minus;</button>
+  <button class="btn" id="fontPlus" type="button" aria-label="Perbesar huruf">A+</button>
+  <button class="btn" id="widthToggle" type="button" aria-label="Ubah lebar baca">Lebar</button>
+  <span class="reader-controls-note" id="readerNote">Sesuaikan nyaman membaca</span>
+</div>
 {content_html}
 </main>
 <nav class="novel-nav">
@@ -301,6 +351,7 @@ def build(site_dir, out_dir=None, src_path=None):
     groups = group_files(chapters)
 
     rendered = []
+    toc = toc_entries(groups)
     for idx, group in enumerate(groups):
         chap = group[0]
         fname = file_name_for(chap["key"], idx + 1)
@@ -320,7 +371,7 @@ def build(site_dir, out_dir=None, src_path=None):
         for pos, sub in enumerate(group):
             contents.append(render_chapter_content(sub, pos == 0))
         content = "\n\n".join(contents)
-        doc = render_chapter_html(chap, content, prev_link, next_link)
+        doc = render_chapter_html(chap, content, prev_link, next_link, toc=toc)
         rendered.append((fname, doc, chap, prev_link, next_link))
     return rendered, groups
 
