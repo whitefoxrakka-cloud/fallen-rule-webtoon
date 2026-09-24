@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Generator halaman web novel FALLEN RULE dari make_fallen_rule_docx_v5.py.
+"""Generator halaman web novel FALLEN RULE dari make_fallen_rule_docx_v6.py.
 
 Membaca blok chapter_heading()/P() dari generator docx, lalu menghasilkan
 satu berkas HTML per bab di website/novel/, mengelola nav prev/next antar
@@ -22,7 +22,7 @@ import re
 import sys
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEFAULT_SRC = r"D:\Novel\make_fallen_rule_docx_v5.py"
+DEFAULT_SRC = r"D:\Novel\make_fallen_rule_docx_v6.py"
 NOVEL_DIR = os.path.join(BASE, "novel")
 INDEX = os.path.join(BASE, "index.html")
 
