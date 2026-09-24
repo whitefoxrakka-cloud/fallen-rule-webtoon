@@ -4,10 +4,30 @@
   const ep = window.EPISODES[epId];
   if (!ep) { location.href = "index.html"; return; }
 
+  const ids = Object.keys(window.EPISODES).sort((a, b) => Number(a) - Number(b));
+
   document.title = ep.title + " — FALLEN RULE";
   document.getElementById("epTitle").textContent = ep.title;
-  const lbl = document.getElementById("epLabel");
-  if (lbl) lbl.textContent = "Episode " + epId;
+
+  const picker = document.getElementById("epPicker");
+  if (picker) {
+    ids.forEach(function (id) {
+      const opt = document.createElement("option");
+      opt.value = id;
+      opt.textContent = window.EPISODES[id].title;
+      if (id === epId) opt.selected = true;
+      picker.appendChild(opt);
+    });
+    picker.addEventListener("change", function () {
+      location.href = "reader.html?ep=" + picker.value;
+    });
+  }
+
+  const curIdx = ids.indexOf(epId);
+  const prevEl = document.getElementById("prevEp");
+  const nextEl = document.getElementById("nextEp");
+  if (prevEl) prevEl.href = curIdx > 0 ? "reader.html?ep=" + ids[curIdx - 1] : "#";
+  if (nextEl) nextEl.href = curIdx < ids.length - 1 ? "reader.html?ep=" + ids[curIdx + 1] : "#";
 
   const canvas = document.getElementById("scrollCanvas");
   canvas.innerHTML = "";

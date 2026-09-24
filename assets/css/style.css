@@ -52,6 +52,15 @@ body {
 }
 .icon-btn:hover { background: var(--border); }
 
+.ep-picker {
+  background: var(--bg); color: var(--text); border: 1px solid var(--border);
+  border-radius: 6px; font-family: inherit; font-size: 14px; padding: 5px 8px;
+  max-width: 240px; cursor: pointer;
+}
+@media (max-width: 620px) {
+  .ep-picker { max-width: 170px; font-size: 13px; }
+}
+
 main { max-width: 760px; margin: 0 auto; padding: 26px 18px 40px; }
 
 .hero h1 { font-size: 40px; margin: 8px 0 6px; }
